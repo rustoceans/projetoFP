@@ -15,3 +15,20 @@ def pessoaListar(request):
 
 def pessoaAdicionar(request):
     return render(request, 'pessoas/formPessoas.html')
+
+def pessoaSalvar(request):
+    if request.method == 'POST':
+        codigo = request.POST.get('codigo', '0')
+
+        try:
+            pessoa = Pessoa.objects.get(pk=codigo)
+        except:
+            pessoa = Pessoa()
+
+        pessoa.nome = request.POST.get('nome', '')
+        pessoa.email = request.POST.get('email', '')
+        pessoa.telefone = request.POST.get('telefone', '(00) 0-0000-0000logradouro')
+        pessoa.logradouro = request.POST.get('logradouro', '')
+
+        pessoa.save()
+        return HttpResponseRedirect('/pessoas/') 
